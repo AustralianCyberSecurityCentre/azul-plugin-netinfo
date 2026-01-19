@@ -40,10 +40,10 @@ class AzulPluginNetworkInfo(Plugin):
 
     def execute(self, job: Job):
         """Process available pcaps and feature any interesting network features."""
-        if not job.get_all_data(file_format_legacy="Network capture"):
+        if not job.get_all_data(file_format="network/tcpdump"):
             return State.Label.OPT_OUT
 
-        for data in job.get_all_data(file_format_legacy="Network capture"):
+        for data in job.get_all_data(file_format="network/tcpdump"):
             features = {}
 
             p = data.read()
