@@ -263,7 +263,7 @@ def ja3_scan_pcap(pcap_data):
                 "source_port": tcp.sport,
                 "destination_port": tcp.dport,
                 "ja3": ja3,
-                "ja3_digest": md5(ja3.encode()).hexdigest(),  # noqa: S303  # nosec: B303 B324
+                "ja3_digest": md5(ja3.encode()).hexdigest(),  # noqa: S324
                 "timestamp": timestamp,
                 "client_hello_pkt": binascii.hexlify(tcp.data).decode("utf-8"),
             }
