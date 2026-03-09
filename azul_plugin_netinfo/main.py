@@ -6,17 +6,18 @@ from packet captures.
 
 from azul_runner import (
     Feature,
+    FeatureType,
     FeatureValue,
     Job,
     Plugin,
     State,
-    Uri,
     add_settings,
     cmdline_run,
 )
 
 from .info import extract_pcap_features
 from .ja3 import ja3_scan_pcap
+from .ja4.ja4 import ja4_scan_pcap
 
 
 class AzulPluginNetworkInfo(Plugin):
@@ -28,14 +29,18 @@ class AzulPluginNetworkInfo(Plugin):
         filter_data_types={"*": ["network/tcpdump"]},  # handles anything with PCAP streams
     )
     FEATURES = [
-        Feature(name="ja3", desc="JA3 string for TLS", type=str),
-        Feature(name="ja3_digest", desc="JA3 digest (md5[JA3]) for TLS", type=str),
-        Feature(name="user_agent", desc="HTTP User Agent seen in requests", type=str),
-        Feature(name="contacted_url", desc="Observed HTTP URL requested", type=Uri),
-        Feature(name="contacted_host", desc="Network endpoint seen communicating to", type=Uri),
-        Feature(name="contacted_port", desc="Destination port and protocol seen communicating on", type=int),
-        Feature(name="resolved_host", desc="Requested DNS resolutions", type=Uri),
-        Feature(name="network_protocol", desc="Network protocol observed", type=str),
+        Feature(name="ja3", desc="JA3 string for TLS", type=FeatureType.String),
+        Feature(name="ja3_digest", desc="JA3 digest (md5[JA3]) for TLS", type=FeatureType.String),
+        Feature(name="ja4", desc="JA4 string for TLS", type=FeatureType.String),
+        Feature(name="ja4_ab", desc="JA4_ab string for TLS", type=FeatureType.String),
+        Feature(name="ja4_ac", desc="JA4_ac string for TLS", type=FeatureType.String),
+        Feature(name="ja4_bc", desc="JA4_bc string for TLS", type=FeatureType.String),
+        Feature(name="user_agent", desc="HTTP User Agent seen in requests", type=FeatureType.String),
+        Feature(name="contacted_url", desc="Observed HTTP URL requested", type=FeatureType.Uri),
+        Feature(name="contacted_host", desc="Network endpoint seen communicating to", type=FeatureType.Uri),
+        Feature(name="contacted_port", desc="Destination port and protocol seen communicating on", type=FeatureType.Integer),
+        Feature(name="resolved_host", desc="Requested DNS resolutions", type=FeatureType.Uri),
+        Feature(name="network_protocol", desc="Network protocol observed", type=FeatureType.String),
     ]
 
     def execute(self, job: Job):
@@ -50,6 +55,12 @@ class AzulPluginNetworkInfo(Plugin):
             for result in ja3_scan_pcap(p):
                 features.setdefault("ja3", set()).add(result["ja3"])
                 features.setdefault("ja3_digest", set()).add(result["ja3_digest"])
+                
+            for result in ja4_scan_pcap(p):
+                features.setdefault("ja4", set()).add(result["ja4"])
+                features.setdefault("ja4_ab", set()).add(result["ja4_ab"])
+                features.setdefault("ja4_ac", set()).add(result["ja4_ac"])
+                features.setdefault("ja4_bc", set()).add(result["ja4_bc"])
 
             result = extract_pcap_features(p)
             if result["user-agents"]:
