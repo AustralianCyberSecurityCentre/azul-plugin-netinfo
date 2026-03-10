@@ -10,7 +10,7 @@ from azul_plugin_netinfo.main import AzulPluginNetworkInfo
 class TestExecute(test_template.TestPlugin):
     PLUGIN_TO_TEST = AzulPluginNetworkInfo
 
-    def test_ja3_digest(self):
+    def test_ja3_and_ja4_digests(self):
         result = self.do_execution(
             data_in=[
                 (
@@ -39,9 +39,23 @@ class TestExecute(test_template.TestPlugin):
                                 )
                             ],
                             "ja3_digest": [FV("ba7a226ea102737ecfa8959f26b28b95")],
+                            "ja4": [FV("t12d5409h6_6e12e313ba62_3e29050f71c4")],
+                            "ja4_ab": [FV("t12d5409h6_6e12e313ba62")],
+                            "ja4_ac": [FV("t12d5409h6_3e29050f71c4")],
+                            "ja4_bc": [FV("6e12e313ba62_3e29050f71c4")],
+                            "ja4_ro": [
+                                FV(
+                                    "t12d5409h6_c02f,c02b,c030,c02c,009e,00a2,00a3,009f,c027,c023,c013,c009,c028,c024,c014,c00a,0067,0033,0040,006b,0038,0039,009c,009d,003c,003d,002f,0035,00a5,00a1,006a,0069,0068,0037,0036,00a4,00a0,003f,003e,0032,0031,0030,0088,0087,0086,0085,0084,0045,0044,0043,0042,0041,000a,00ff_0000,000b,000a,0023,000d,000f,3374,0010,0015_0601,0602,0603,0501,0502,0503,0401,0402,0403,0301,0302,0303,0201,0202,0203"
+                                )
+                            ],
                             "network_protocol": [FV("TLS")],
                         },
-                        info={"pcapinfo": {"ja3_digest": ["ba7a226ea102737ecfa8959f26b28b95"]}},
+                        info={
+                            "pcapinfo": {
+                                "ja3_digest": ["ba7a226ea102737ecfa8959f26b28b95"],
+                                "ja4": ["t12d5409h6_6e12e313ba62_3e29050f71c4"],
+                            }
+                        },
                     )
                 ],
             ),
@@ -122,6 +136,27 @@ class TestExecute(test_template.TestPlugin):
                                 FV("3b5074b1b5d032e5620f69f9f700ff0e"),
                                 FV("c12f54a3f91dc7bafd92cb59fe009a35"),
                             ],
+                            "ja4": [
+                                FV("t12d210700_76e208dd3e22_f28add8e7af0"),
+                                FV("t12i210600_76e208dd3e22_f28add8e7af0"),
+                            ],
+                            "ja4_ab": [
+                                FV("t12d210700_76e208dd3e22"),
+                                FV("t12i210600_76e208dd3e22"),
+                            ],
+                            "ja4_ac": [
+                                FV("t12d210700_f28add8e7af0"),
+                                FV("t12i210600_f28add8e7af0"),
+                            ],
+                            "ja4_bc": [FV("76e208dd3e22_f28add8e7af0")],
+                            "ja4_ro": [
+                                FV(
+                                    "t12d210700_c02c,c02b,c030,c02f,009f,009e,c024,c023,c028,c027,c00a,c009,c014,c013,009d,009c,003d,003c,0035,002f,000a_0000,000a,000b,000d,0023,0017,ff01_0401,0501,0201,0403,0503,0203,0202,0601,0603"
+                                ),
+                                FV(
+                                    "t12i210600_c02c,c02b,c030,c02f,009f,009e,c024,c023,c028,c027,c00a,c009,c014,c013,009d,009c,003d,003c,0035,002f,000a_000a,000b,000d,0023,0017,ff01_0401,0501,0201,0403,0503,0203,0202,0601,0603"
+                                ),
+                            ],
                             "network_protocol": [FV("DNS"), FV("HTTP"), FV("IPv4"), FV("TCP"), FV("TLS"), FV("UDP")],
                             "resolved_host": [
                                 FV("222.222.67.208.in-addr.arpa"),
@@ -145,6 +180,10 @@ class TestExecute(test_template.TestPlugin):
                         info={
                             "pcapinfo": {
                                 "ja3_digest": ["3b5074b1b5d032e5620f69f9f700ff0e", "c12f54a3f91dc7bafd92cb59fe009a35"],
+                                "ja4": [
+                                    "t12d210700_76e208dd3e22_f28add8e7af0",
+                                    "t12i210600_76e208dd3e22_f28add8e7af0",
+                                ],
                                 "contacted_host": [
                                     "173.209.43.53:443",
                                     "185.158.250.29:443",

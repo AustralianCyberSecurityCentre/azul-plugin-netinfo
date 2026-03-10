@@ -1,1 +1,2 @@
 libmagic-dev
+tshark

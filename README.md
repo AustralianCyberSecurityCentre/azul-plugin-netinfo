@@ -14,7 +14,7 @@ To install azul-netinfo for development run the command
 pip install -e .
 ```
 
-## Usage: azul-netinfo
+## Usage: azul-plugin-netinfo
 
 This plugin is responsible for reading pcaps and featuring interesting network
 telemetry like hosts contacted and JA3 Hashes of SSL connections.
@@ -22,13 +22,13 @@ telemetry like hosts contacted and JA3 Hashes of SSL connections.
 Usage on local files:
 
 ```
-azul-netinfo foobar.pcap
+azul-plugin-netinfo foobar.pcap
 ```
 
 Automated usage in system:
 
 ```
-azul-netinfo --server http://azul-dispatcher.localnet/
+azul-plugin-netinfo --server http://azul-dispatcher.localnet/
 ```
 
 ## Python Package management
