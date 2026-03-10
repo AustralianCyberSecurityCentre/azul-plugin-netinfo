@@ -38,7 +38,9 @@ class AzulPluginNetworkInfo(Plugin):
         Feature(name="user_agent", desc="HTTP User Agent seen in requests", type=FeatureType.String),
         Feature(name="contacted_url", desc="Observed HTTP URL requested", type=FeatureType.Uri),
         Feature(name="contacted_host", desc="Network endpoint seen communicating to", type=FeatureType.Uri),
-        Feature(name="contacted_port", desc="Destination port and protocol seen communicating on", type=FeatureType.Integer),
+        Feature(
+            name="contacted_port", desc="Destination port and protocol seen communicating on", type=FeatureType.Integer
+        ),
         Feature(name="resolved_host", desc="Requested DNS resolutions", type=FeatureType.Uri),
         Feature(name="network_protocol", desc="Network protocol observed", type=FeatureType.String),
     ]
@@ -55,7 +57,7 @@ class AzulPluginNetworkInfo(Plugin):
             for result in ja3_scan_pcap(p):
                 features.setdefault("ja3", set()).add(result["ja3"])
                 features.setdefault("ja3_digest", set()).add(result["ja3_digest"])
-                
+
             for result in ja4_scan_pcap(p):
                 features.setdefault("ja4", set()).add(result["ja4"])
                 features.setdefault("ja4_ab", set()).add(result["ja4_ab"])

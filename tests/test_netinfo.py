@@ -10,7 +10,7 @@ from azul_plugin_netinfo.main import AzulPluginNetworkInfo
 class TestExecute(test_template.TestPlugin):
     PLUGIN_TO_TEST = AzulPluginNetworkInfo
 
-    def test_ja3_digest(self):
+    def test_ja3_and_ja4_digests(self):
         result = self.do_execution(
             data_in=[
                 (
@@ -39,6 +39,10 @@ class TestExecute(test_template.TestPlugin):
                                 )
                             ],
                             "ja3_digest": [FV("ba7a226ea102737ecfa8959f26b28b95")],
+                            "ja4": [FV("t12d5409h6_6e12e313ba62_3e29050f71c4")],
+                            "ja4_ab": [FV("t12d5409h6_6e12e313ba62")],
+                            "ja4_ac": [FV("t12d5409h6_3e29050f71c4")],
+                            "ja4_bc": [FV("6e12e313ba62_3e29050f71c4")],
                             "network_protocol": [FV("TLS")],
                         },
                         info={"pcapinfo": {"ja3_digest": ["ba7a226ea102737ecfa8959f26b28b95"]}},
@@ -122,6 +126,19 @@ class TestExecute(test_template.TestPlugin):
                                 FV("3b5074b1b5d032e5620f69f9f700ff0e"),
                                 FV("c12f54a3f91dc7bafd92cb59fe009a35"),
                             ],
+                            "ja4": [
+                                FV("t12d210700_76e208dd3e22_f28add8e7af0"),
+                                FV("t12i210600_76e208dd3e22_f28add8e7af0"),
+                            ],
+                            "ja4_ab": [
+                                FV("t12d210700_76e208dd3e22"),
+                                FV("t12i210600_76e208dd3e22"),
+                            ],
+                            "ja4_ac": [
+                                FV("t12d210700_f28add8e7af0"),
+                                FV("t12i210600_f28add8e7af0"),
+                            ],
+                            "ja4_bc": [FV("76e208dd3e22_f28add8e7af0")],
                             "network_protocol": [FV("DNS"), FV("HTTP"), FV("IPv4"), FV("TCP"), FV("TLS"), FV("UDP")],
                             "resolved_host": [
                                 FV("222.222.67.208.in-addr.arpa"),
