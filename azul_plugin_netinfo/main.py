@@ -23,7 +23,7 @@ from .ja4.ja4 import ja4_scan_pcap
 class AzulPluginNetworkInfo(Plugin):
     """Extracts network telemetry from packet captures."""
 
-    VERSION = "2025.03.19"
+    VERSION = "2026.03.10"
     ENTITY_TYPE = "binary"
     SETTINGS = add_settings(
         filter_data_types={"*": ["network/tcpdump"]},  # handles anything with PCAP streams
@@ -35,6 +35,11 @@ class AzulPluginNetworkInfo(Plugin):
         Feature(name="ja4_ab", desc="JA4_ab string for TLS", type=FeatureType.String),
         Feature(name="ja4_ac", desc="JA4_ac string for TLS", type=FeatureType.String),
         Feature(name="ja4_bc", desc="JA4_bc string for TLS", type=FeatureType.String),
+        Feature(
+            name="ja4_ro",
+            desc=" Raw JA4 string (ciphers/extensions in original order) for TLS",
+            type=FeatureType.String,
+        ),
         Feature(name="user_agent", desc="HTTP User Agent seen in requests", type=FeatureType.String),
         Feature(name="contacted_url", desc="Observed HTTP URL requested", type=FeatureType.Uri),
         Feature(name="contacted_host", desc="Network endpoint seen communicating to", type=FeatureType.Uri),
@@ -63,6 +68,7 @@ class AzulPluginNetworkInfo(Plugin):
                 features.setdefault("ja4_ab", set()).add(result["ja4_ab"])
                 features.setdefault("ja4_ac", set()).add(result["ja4_ac"])
                 features.setdefault("ja4_bc", set()).add(result["ja4_bc"])
+                features.setdefault("ja4_ro", set()).add(result["ja4_ro"])
 
             result = extract_pcap_features(p)
             if result["user-agents"]:
@@ -82,6 +88,8 @@ class AzulPluginNetworkInfo(Plugin):
             pinfo = {}
             if features.get("ja3_digest"):
                 pinfo["ja3_digest"] = list(sorted(features["ja3_digest"]))
+            if features.get("ja4"):
+                pinfo["ja4"] = list(sorted(features["ja4"]))
             if features.get("contacted_host"):
                 pinfo["contacted_host"] = list(sorted(features["contacted_host"]))
             if features.get("contacted_url"):
