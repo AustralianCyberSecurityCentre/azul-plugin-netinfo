@@ -1,13 +1,9 @@
-"""
-Slight modification of https://github.com/FoxIO-LLC/ja4/blob/main/python/common.py
+"""Slight modification of `https://github.com/FoxIO-LLC/ja4/blob/main/python/common.py`.
 
 Copyright (c) 2023, FoxIO, LLC.
 All rights reserved.
 Patent Pending
 JA4 is Open-Source, Licensed under BSD 3-Clause
-
-Copyright (c) 2023 FoxIO
-All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -35,8 +31,10 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED O
 THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-from hashlib import sha256
+# ruff: noqa: D103, E741, S110
+
 from datetime import datetime
+from hashlib import sha256
 
 conn_cache = {}
 quic_cache = {}
@@ -212,8 +210,7 @@ def get_supported_version(v):
 
 
 def parse_timestamp(timestamp):
-    """
-    Parse a timestamp supporting multiple formats.
+    """Parse a timestamp supporting multiple formats.
 
     Parameters:
         timestamp: Unix timestamp (float/int) or ISO 8601 string
@@ -247,7 +244,7 @@ def scan_tls(layer):
         if "tls_tls_handshake_type" in layer:
             return layer
     else:
-        for l in layer:
+        for l in layer:  # ruff: noqa: E741
             if "tls_tls_handshake_type" in l:
                 return l
 
@@ -262,7 +259,7 @@ def get_signature_algorithms(packet):
         try:
             if extensions.index("13") > extensions.index("35"):
                 idx = 1
-        except Exception as e:
+        except Exception:  # ruff: noqa: S110
             pass
         packet["signature_algorithms"] = packet["signature_algorithms"][alg_lengths[idx] :]
     return [x for x in packet.get("signature_algorithms", []) if x not in GREASE_TABLE]
