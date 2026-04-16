@@ -29,39 +29,53 @@ OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
+
+
+__author__ = "Tommy Stallings"
+__copyright__ = "Copyright (c) 2017, salesforce.com, inc."
+__credits__ = ["John B. Althouse", "Jeff Atkinson", "Josh Atkins"]
+__license__ = "BSD 3-Clause License"
+__version__ = "1.0.0"
+__maintainer__ = "Tommy Stallings, Brandon Dixon"
+__email__ = "tommy.stallings2@gmail.com"
 """
 
-import binascii
+import argparse
 import io
+import dpkt
+import json
 import socket
+import binascii
 import struct
+import os
 from hashlib import md5
 
-import dpkt
 
 GREASE_TABLE = {
-    0x0A0A,
-    0x1A1A,
-    0x2A2A,
-    0x3A3A,
-    0x4A4A,
-    0x5A5A,
-    0x6A6A,
-    0x7A7A,
-    0x8A8A,
-    0x9A9A,
-    0xAAAA,
-    0xBABA,
-    0xCACA,
-    0xDADA,
-    0xEAEA,
-    0xFAFA,
+    0x0A0A: True,
+    0x1A1A: True,
+    0x2A2A: True,
+    0x3A3A: True,
+    0x4A4A: True,
+    0x5A5A: True,
+    0x6A6A: True,
+    0x7A7A: True,
+    0x8A8A: True,
+    0x9A9A: True,
+    0xAAAA: True,
+    0xBABA: True,
+    0xCACA: True,
+    0xDADA: True,
+    0xEAEA: True,
+    0xFAFA: True,
 }
 # GREASE_TABLE Ref: https://tools.ietf.org/html/draft-davidben-tls-grease-00
-TLS_HANDSHAKE = 0x16
+TLS_HANDSHAKE = 22
 TLS_VERSION_MAJOR = 0x03
 # NOTE: dpkt can only handle SSL3.0, TLS1.0, 1.1 and 1.2, but we'll leave 1.3
 TLS_VERSION_MINORS = (0x00, 0x01, 0x02, 0x03, 0x04)
+
+SSL_PORT = 443
 
 
 def convert_ip(value):
@@ -153,7 +167,7 @@ def process_extensions(client_handshake):
     elliptic_curve = ""
     elliptic_curve_point_format = ""
     for ext_val, ext_data in client_handshake.extensions:
-        if ext_val not in GREASE_TABLE:
+        if not GREASE_TABLE.get(ext_val):
             exts.append(ext_val)
         if ext_val == 0x0A:
             a, b = parse_variable_array(ext_data, 2)
@@ -189,14 +203,21 @@ def ja3_scan_pcap(pcap_data):
         pcap = reader(io.BytesIO(pcap_data))
     except ValueError:
         return results
+    
+    decoder = dpkt.ethernet.Ethernet
+    linktype = pcap.datalink()
+    if linktype == dpkt.pcap.DLT_LINUX_SLL:
+        decoder = dpkt.sll.SLL
+    elif linktype == dpkt.pcap.DLT_NULL or linktype == dpkt.pcap.DLT_LOOP:
+        decoder = dpkt.loopback.Loopback
 
     for timestamp, buf in pcap:
         try:
-            eth = dpkt.ethernet.Ethernet(buf)
-        except Exception:  # noqa: S112  # nosec: B112
+            eth = decoder(buf)
+        except Exception:  # noqa: S112
             continue
 
-        if not isinstance(eth.data, dpkt.ip.IP):
+        if not isinstance(eth.data, (dpkt.ip.IP, dpkt.ip6.IP6)):
             # We want an IP packet
             continue
         if not isinstance(eth.data.data, dpkt.tcp.TCP):
