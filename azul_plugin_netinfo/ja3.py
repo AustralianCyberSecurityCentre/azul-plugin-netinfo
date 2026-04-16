@@ -40,16 +40,13 @@ __maintainer__ = "Tommy Stallings, Brandon Dixon"
 __email__ = "tommy.stallings2@gmail.com"
 """
 
-import argparse
-import io
-import dpkt
-import json
-import socket
 import binascii
+import io
+import socket
 import struct
-import os
 from hashlib import md5
 
+import dpkt
 
 GREASE_TABLE = {
     0x0A0A: True,
@@ -203,7 +200,7 @@ def ja3_scan_pcap(pcap_data):
         pcap = reader(io.BytesIO(pcap_data))
     except ValueError:
         return results
-    
+
     decoder = dpkt.ethernet.Ethernet
     linktype = pcap.datalink()
     if linktype == dpkt.pcap.DLT_LINUX_SLL:
