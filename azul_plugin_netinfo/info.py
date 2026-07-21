@@ -90,8 +90,8 @@ def extract_pcap_features(pcap_data):
             http = dpkt.http.Request(ip.data.data)
             method = http.method
             uri = http.uri
-            host = http.headers.get("host")
-            agent = http.headers.get("user-agent")
+            host = http.headers.get("host")  # ty: ignore[unresolved-attribute] ty thinks possible AttributeError, but if we're ignoring it just suppress
+            agent = http.headers.get("user-agent")  # ty: ignore[unresolved-attribute]
 
             if uri and method:
                 results["protocols"].add("HTTP")
@@ -142,7 +142,7 @@ def extract_pcap_features(pcap_data):
             ssl = dpkt.ssl.TLSRecord(ip.data.data)
             # only want to log when outgoing
             rec = dpkt.ssl.RECORD_TYPES[ssl.type](ssl.data)
-            if isinstance(rec.data, dpkt.ssl.TLSClientHello):
+            if isinstance(rec.data, dpkt.ssl.TLSClientHello):  # ty: ignore[unresolved-attribute] ty says possible AttributeError on rec.data but if were passing anyway just suppress it
                 results["protocols"].add("TLS")
                 last = (port, "TLS")
 

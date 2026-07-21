@@ -100,7 +100,12 @@ class AzulPluginNetworkInfo(Plugin):
                 pinfo["user_agent"] = list(sorted(features["user_agent"]))
 
             if features or pinfo:
-                de = self.get_data_event(data.file_info.sha256)
+                hash = data.get_hash()
+                if hash is None:
+                    return State(
+                        label=State.Label.ERROR_EXCEPTION, message="Expected file's sha256 to be set, got None"
+                    )
+                de = self.get_data_event(hash)
                 de.add_many_feature_values(features)
                 de.add_info({"pcapinfo": pinfo})
 

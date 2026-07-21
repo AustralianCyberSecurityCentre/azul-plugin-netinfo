@@ -31,7 +31,9 @@ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED O
 THE POSSIBILITY OF SUCH DAMAGE.
 """
 
-# ruff: noqa: D103, E741, S110
+# ruff: noqa: D103
+# ruff: noqa: E741
+# ruff: noqa: S110
 
 from datetime import datetime
 from hashlib import sha256
@@ -244,7 +246,7 @@ def scan_tls(layer):
         if "tls_tls_handshake_type" in layer:
             return layer
     else:
-        for l in layer:  # ruff: noqa: E741
+        for l in layer:  # noqa: E741
             if "tls_tls_handshake_type" in l:
                 return l
 
@@ -259,7 +261,7 @@ def get_signature_algorithms(packet):
         try:
             if extensions.index("13") > extensions.index("35"):
                 idx = 1
-        except Exception:  # ruff: noqa: S110
+        except Exception:  # noqa: S110
             pass
         packet["signature_algorithms"] = packet["signature_algorithms"][alg_lengths[idx] :]
     return [x for x in packet.get("signature_algorithms", []) if x not in GREASE_TABLE]
