@@ -37,6 +37,7 @@ import json
 import os
 import tempfile
 from subprocess import PIPE, Popen
+from typing import Any
 
 from .common import (
     GREASE_TABLE,
@@ -279,7 +280,7 @@ def ja4_scan_pcap(buf: bytes) -> list[dict[str, str]]:
                 if "layers" in line:
                     pkt = json.loads(line)
 
-                    x = {}
+                    x: dict[str, Any] = {}
                     layer_update(x, pkt, "frame")
                     layer_update(x, pkt, "ip") if "ipv6" not in x["protos"] else layer_update(x, pkt, "ipv6")
 

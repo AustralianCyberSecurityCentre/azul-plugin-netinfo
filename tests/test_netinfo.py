@@ -28,9 +28,8 @@ class TestExecute(test_template.TestPlugin):
                 state=State(State.Label.COMPLETED),
                 events=[
                     Event(
-                        parent_hash="3a53d7b87e80bc3a00e9851274f7661a5c51fceffd046cdeda2642d28797e084",
-                        entity_type="binary",
-                        entity_id="3a53d7b87e80bc3a00e9851274f7661a5c51fceffd046cdeda2642d28797e084",
+                        parent_sha256="3a53d7b87e80bc3a00e9851274f7661a5c51fceffd046cdeda2642d28797e084",
+                        sha256="3a53d7b87e80bc3a00e9851274f7661a5c51fceffd046cdeda2642d28797e084",
                         features={
                             "contacted_port": [FV(443, label="TLS")],
                             "ja3": [
@@ -79,9 +78,8 @@ class TestExecute(test_template.TestPlugin):
                 state=State(State.Label.COMPLETED),
                 events=[
                     Event(
-                        parent_hash="1cb1ec79861a5f5a5a7aa739df88c9b37a64eb5f158003628bc1478d172f2346",
-                        entity_type="binary",
-                        entity_id="1cb1ec79861a5f5a5a7aa739df88c9b37a64eb5f158003628bc1478d172f2346",
+                        parent_sha256="1cb1ec79861a5f5a5a7aa739df88c9b37a64eb5f158003628bc1478d172f2346",
+                        sha256="1cb1ec79861a5f5a5a7aa739df88c9b37a64eb5f158003628bc1478d172f2346",
                         features={
                             "contacted_host": [
                                 FV("173.209.43.53:443"),
@@ -254,9 +252,8 @@ class TestExecute(test_template.TestPlugin):
                 ),
                 events=[
                     Event(
-                        parent_hash="7af73d6e3473a98b8bf626c90c2a143d658905ca6c68c306f07204783eedc3ce",
-                        entity_type="binary",
-                        entity_id="7af73d6e3473a98b8bf626c90c2a143d658905ca6c68c306f07204783eedc3ce",
+                        parent_sha256="7af73d6e3473a98b8bf626c90c2a143d658905ca6c68c306f07204783eedc3ce",
+                        sha256="7af73d6e3473a98b8bf626c90c2a143d658905ca6c68c306f07204783eedc3ce",
                         features={
                             "contacted_host": [
                                 FV("1.182.13.251:51354"),
